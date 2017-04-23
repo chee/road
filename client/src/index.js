@@ -1,5 +1,5 @@
-const h = require('inferno-hyperscript')
+const React = require('inferno-compat')
 const render = require('inferno').render
-const Application = require('./containers/Application')
+const Toad = require('./containers/Toad')
 
-render(<Application/>, document.getElementById('app'))
+render(<Toad/>, document.getElementById('app'))

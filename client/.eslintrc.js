@@ -1,36 +1,37 @@
 module.exports = {
-	"env": {
-		"browser": true,
-		"commonjs": true,
-		"es6": true
+	'env': {
+		'browser': true,
+		'commonjs': true,
+		'es6': true
 	},
-	"plugins": ["inferno"],
-	"extends": ["eslint:recommended", "plugin:inferno/recommended"],
-	"parserOptions": {
-		"ecmaFeatures": {
-			"jsx": true
+	'plugins': ['inferno', 'react'],
+	'extends': [
+		'eslint:recommended',
+		'plugin:inferno/recommended'
+	],
+	'parserOptions': {
+		'ecmaFeatures': {
+			'jsx': true
 		}
 	},
-	"rules": {
-		"indent": [
-			"error",
-			"tab"
+	'rules': {
+		'react/jsx-uses-react': 'error',
+		'react/jsx-uses-vars': 'error',
+		'indent': [
+			'error',
+			'tab'
 		],
-		"linebreak-style": [
-			"error",
-			"unix"
+		'linebreak-style': [
+			'error',
+			'unix'
 		],
-		"quotes": [
-			"error",
-			"single"
+		'quotes': [
+			'error',
+			'single'
 		],
-		"semi": [
-			"error",
-			"never"
-		],
-		"no-unused-vars": [
-			"error",
-			{varsIgnorePattern: "^h$"}
+		'semi': [
+			'error',
+			'never'
 		]
 	}
-};
+}

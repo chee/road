@@ -136,7 +136,7 @@ array-unique@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.2.1.tgz#a1d97ccafcbc2625cc70fadceb36a50c58b01a53"
 
-array.prototype.find@^2.0.3:
+array.prototype.find@^2.0.1, array.prototype.find@^2.0.3:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/array.prototype.find/-/array.prototype.find-2.0.4.tgz#556a5c5362c08648323ddaeb9de9d14bc1864c90"
   dependencies:
@@ -736,6 +736,13 @@ diffie-hellman@^5.0.0:
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
 
+doctrine@^1.2.2:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
+  dependencies:
+    esutils "^2.0.2"
+    isarray "^1.0.0"
+
 doctrine@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-2.0.0.tgz#c73d8d2909d22291e1a007a395804da8b665fe63"
@@ -899,6 +906,16 @@ eslint-plugin-inferno@^6.10.4:
     doctrine "^2.0.0"
     has "^1.0.1"
     jsx-ast-utils "^1.4.0"
+    object.assign "^4.0.4"
+
+eslint-plugin-react@^6.10.3:
+  version "6.10.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-6.10.3.tgz#c5435beb06774e12c7db2f6abaddcbf900cd3f78"
+  dependencies:
+    array.prototype.find "^2.0.1"
+    doctrine "^1.2.2"
+    has "^1.0.1"
+    jsx-ast-utils "^1.3.4"
     object.assign "^4.0.4"
 
 eslint@^3.19.0:
@@ -1384,6 +1401,27 @@ indexof@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/indexof/-/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
 
+inferno-compat@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/inferno-compat/-/inferno-compat-3.0.5.tgz#f957cc369cd76c1ad9c154a281c52052323eb0c6"
+  dependencies:
+    inferno "3.0.5"
+    inferno-component "3.0.5"
+    inferno-create-class "3.0.5"
+    inferno-create-element "3.0.5"
+    inferno-shared "^3.0.0"
+    inferno-transition-group "1.1.1"
+    inferno-vnode-flags "^3.0.0"
+    rc-css-transition-group-modern "^2.1.6"
+
+inferno-component@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/inferno-component/-/inferno-component-3.0.5.tgz#f39584dbdd8e43167fbbfcfa8d2bc5509dac5c33"
+  dependencies:
+    inferno "3.0.5"
+    inferno-shared "^3.0.0"
+    inferno-vnode-flags "^3.0.0"
+
 inferno-component@^1.5.5:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/inferno-component/-/inferno-component-1.5.5.tgz#574dd1feaa2aed64c8813077fca0b7f864c154f9"
@@ -1392,11 +1430,19 @@ inferno-component@^1.5.5:
     inferno-shared "^1.5.1"
     inferno-vnode-flags "^1.5.1"
 
-inferno-hyperscript@^3.0.5:
+inferno-create-class@3.0.5:
   version "3.0.5"
-  resolved "https://registry.yarnpkg.com/inferno-hyperscript/-/inferno-hyperscript-3.0.5.tgz#0b59adb9072b882968ceb8fa257a38a99a86cb8b"
+  resolved "https://registry.yarnpkg.com/inferno-create-class/-/inferno-create-class-3.0.5.tgz#9262bab5ce0e082cfd73415070f36e17ab6fc2ab"
+  dependencies:
+    inferno-component "3.0.5"
+    inferno-shared "^3.0.0"
+
+inferno-create-element@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/inferno-create-element/-/inferno-create-element-3.0.5.tgz#823ebfa3f3aeef8717ce5771f87f8b65045aa2cf"
   dependencies:
     inferno "3.0.5"
+    inferno-component "3.0.5"
     inferno-shared "^3.0.0"
     inferno-vnode-flags "^3.0.0"
 
@@ -1407,6 +1453,12 @@ inferno-shared@^1.5.1:
 inferno-shared@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/inferno-shared/-/inferno-shared-3.0.0.tgz#daaeaf1b52803ab0572c7765ccfcfb925cfe8272"
+
+inferno-transition-group@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/inferno-transition-group/-/inferno-transition-group-1.1.1.tgz#cf91eb574491da20dfbf0e558869a0c8a77d1ff1"
+  dependencies:
+    inferno "^1.1.1"
 
 inferno-vnode-flags@^1.5.1:
   version "1.5.1"
@@ -1423,7 +1475,7 @@ inferno@3.0.5:
     inferno-shared "^3.0.0"
     inferno-vnode-flags "^3.0.0"
 
-inferno@^1.5.5:
+inferno@^1.1.1, inferno@^1.5.5:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/inferno/-/inferno-1.5.5.tgz#9b266529f6335865f03f96f641dee73b64c0cd66"
   dependencies:
@@ -1725,7 +1777,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.3.6"
 
-jsx-ast-utils@^1.4.0:
+jsx-ast-utils@^1.3.4, jsx-ast-utils@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-1.4.1.tgz#3867213e8dd79bf1e8f2300c0cfc1efb182c0df1"
 
@@ -2386,6 +2438,10 @@ randomatic@^1.1.3:
 randombytes@^2.0.0, randombytes@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.0.3.tgz#674c99760901c3c4112771a31e521dc349cc09ec"
+
+rc-css-transition-group-modern@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/rc-css-transition-group-modern/-/rc-css-transition-group-modern-2.1.6.tgz#e34d63752110ee2ccf5185cd6ba4c774cfdf1bb7"
 
 rc@^1.0.1, rc@^1.1.7:
   version "1.2.0"
