@@ -37,4 +37,21 @@ button {
 	position: absolute;
 	top: 1em;
 	left: 1em;
+	background: #ff2a50;
+	border: none;
+	color: white;
+	width: 4em;
+	height: 4em;
+	border-radius: 50%;
+	border: 4px white solid;
+	box-shadow: 2px 2px 4px rgba(27, 27, 27, 0.27);
+	cursor: pointer;
+}
+
+button:hover {
+	box-shadow: 2px 2px 4px rgba(27, 27, 27, 0.37);
+}
+
+button:active {
+	box-shadow: inset 2px 2px 4px rgba(27, 27, 27, 0.27);
 }
