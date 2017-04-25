@@ -5,10 +5,7 @@ const Stream = ({pictures}) =>
 		{
 			pictures && pictures.map(picture =>
 				<li>
-					<figure>
-						<img src={picture.url}/>
-						<figcaption>{picture.text}</figcaption>
-					</figure>
+					<img src={picture}/>
 				</li>
 			)
 		}
