@@ -7,12 +7,13 @@
   "author": "chee <chee@snake.dog>",
   "dependencies": {
     "body-parser": "^1.17.1",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "nstore": "^0.5.2"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
   },
   "scripts": {
-    "serve": "nodemon index.js"
+    "go": "nodemon index.js"
   }
 }

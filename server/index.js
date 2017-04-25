@@ -1,27 +1,39 @@
 const express = require('express')
 const app = express()
 const body = require('body-parser')
+const PUBLIC = 'public'
 
 const port = process.env.PORT || 9990
 
 const channels = {
-	test: [{
-		msg: 'hello, world!',
-		sha: '8947268b7aabcda5844c1a73c273c15630a95ed8fcf5332b5d380ab5bcb53bc6'
-	}]
+	[PUBLIC]: [
+		'8947268b7aabcda5844c1a73c273c15630a95ed8fcf5332b5d380ab5bcb53bc6'
+	],
+	test: [
+		'8947268b7aabcda5844c1a73c273c15630a95ed8fcf5332b5d380ab5bcb53bc6',
+		'8947268b7aabcda5844c1a73c273c15630a95ed8fcf5332b5d380ab5bcb53bc6'
+	]
 }
 
-const status404 = (_, response) => response.status(404).send('pls specify a channel')
+app.use((request, response, next) => {
+	response.header('access-control-allow-origin', '*')
+	response.header(
+		'access-control-allow-headers',
+		'origin, x-requested-with, content-type, accept'
+	)
+	next()
+})
 
 app.use(body.json())
-app.get('/', status404)
-app.post('/', status404)
 
-app.get('/:channel', (request, response) => {
+const get = (request, response) => {
 	const {channel} = request.params
 	response.statusMessage = 'here you go'
-	response.send(channels[channel])
-})
+	response.send(channels[channel || PUBLIC])
+}
+
+app.get('/', get)
+app.get('/:channel', get)
 
 const noSha = response => {
 	response.statusMessage = 'oh dear'
@@ -41,32 +53,27 @@ const shaTooLong = response => {
 	response.send({error: 'sha too long'})
 }
 
-const msgTooLong = response => {
-	response.statusMessage = 'excuse me please'
-	response.status(400)
-	response.send({error: 'msg too long'})
-}
+const post = (request, response) => {
+	const {params: {channel}, body: {sha}} = request
 
-app.post('/:channel', (request, response) => {
-	const {channel} = request.params
-
-	const picture = {
-		msg: request.body.msg,
-		sha: request.body.sha
+	if (!channels[channel]) {
+		channels[channel] = []
 	}
 
-	const chan = channels[channel] = channels[channel] || []
+	const list = channels[channel || PUBLIC]
 
-	if (!picture.sha) return noSha(response)
-	if (picture.sha == chan[chan.length - 1].sha) return sameSha(response)
-	if (picture.sha.length > 64) return shaTooLong(response)
-	if (picture.msg.length > 255) return msgTooLong(response)
+	if (!sha) return noSha(response)
+	if (sha == list[list.length - 1]) return sameSha(response)
+	if (sha.length > 64) return shaTooLong(response)
 
 	response.statusMessage = 'hey thanks'
 	response.status(200)
-	chan.push(picture)
-	response.send(chan)
-})
+	list.push(sha)
+	response.send([...list].reverse())
+}
+
+app.post('/', post)
+app.post('/:channel', post)
 
 console.log(`listening on prot ${port}`)
 app.listen(port)
