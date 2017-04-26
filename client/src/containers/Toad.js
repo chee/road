@@ -2,7 +2,7 @@ const React = require('inferno-compat')
 const Component = require('inferno-component')
 const Peer = require('peerjs')
 const {getList, addPicture, getPeers} = require('../api')
-const {loadPicture, checkPicture} = require('../store')
+const {loadPicture, checkPicture, storePicture} = require('../store')
 const Stream = require('../components/Stream')
 const Camera = require('../components/Camera')
 
@@ -18,6 +18,12 @@ function response(sha, picture) {
 		response: true,
 		sha,
 		picture
+	}
+}
+
+function reload() {
+	return {
+		reload: true
 	}
 }
 
@@ -37,8 +43,8 @@ class Toad extends Component {
 		this.peer = new Peer({host: 'localhost', port: 9991})
 		this.connections = []
 		this.peer.on('connection', connection => {
-			this.connections.push(connection)
 			connection.on('open', () => {
+				this.connections.push(connection)
 				this.requestPictures(connection)
 				connection.on('data', this.handleData.bind(this, connection))
 			})
@@ -55,7 +61,12 @@ class Toad extends Component {
 
 	addPicture(sha) {
 		addPicture(this.state.channel, sha)
-			.then(list => list && this.setState({list}))
+			.then(list => {
+				list && this.setState({list})
+				this.connections.forEach(connection => {
+					connection.send(reload())
+				})
+			})
 	}
 
 	loadPicture(sha, index) {
@@ -78,10 +89,11 @@ class Toad extends Component {
 			loadPicture(data.sha).then(picture => {
 				picture && connection.send(response(data.sha, picture))
 			})
-		} else if (data.response) {
+		} else if (data.response && checkPicture(data.picture, data.sha)) {
 			const index = this.state.list.indexOf(data.sha)
 			this.setState(state => {
 				state.pictures[index] = data.picture
+				storePicture(data.picture)
 			})
 		}
 	}
@@ -100,6 +112,7 @@ class Toad extends Component {
 			peers.forEach(peer => {
 				const connection = this.peer.connect(peer)
 				connection.on('open', () => {
+					this.connections.push(connection)
 					this.requestPictures(connection)
 					connection.on('data', this.handleData.bind(this, connection))
 				})
