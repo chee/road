@@ -1,12 +1,18 @@
 const express = require('express')
 const app = express()
 const body = require('body-parser')
-const PUBLIC = 'public'
+const PeerServer = require('peer').PeerServer
 
 const port = process.env.PORT || 9990
+const peerPort = process.env.PEER_PORT || 9991
+
+const peers = {}
+const peerServer = PeerServer({
+	port: peerPort
+})
 
 const channels = {
-	[PUBLIC]: [
+	public: [
 		'8947268b7aabcda5844c1a73c273c15630a95ed8fcf5332b5d380ab5bcb53bc6'
 	],
 	test: [
@@ -29,11 +35,10 @@ app.use(body.json())
 const get = (request, response) => {
 	const {channel} = request.params
 	response.statusMessage = 'here you go'
-	response.send(channels[channel || PUBLIC])
+	response.send([...channels[channel]].reverse())
 }
 
-app.get('/', get)
-app.get('/:channel', get)
+app.get('/channels/:channel', get)
 
 const noSha = response => {
 	response.statusMessage = 'oh dear'
@@ -60,7 +65,7 @@ const post = (request, response) => {
 		channels[channel] = []
 	}
 
-	const list = channels[channel || PUBLIC]
+	const list = channels[channel]
 
 	if (!sha) return noSha(response)
 	if (sha == list[list.length - 1]) return sameSha(response)
@@ -72,8 +77,23 @@ const post = (request, response) => {
 	response.send([...list].reverse())
 }
 
-app.post('/', post)
-app.post('/:channel', post)
+app.post('/channels/:channel', post)
+
+app.get('/peers', (request, response) => {
+	response.statusMessage = 'peers here!'
+	response.status(200)
+	response.send(Object.keys(peers))
+})
+
+peerServer.on('connection', id => {
+	console.log(id, 'connect')
+	peers[id] = id
+})
+
+peerServer.on('disconnect', id => {
+	console.log(id, 'disconnect')
+	delete peers[id]
+})
 
 console.log(`listening on prot ${port}`)
 app.listen(port)
