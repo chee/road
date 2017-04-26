@@ -35,6 +35,9 @@ app.use(body.json())
 const get = (request, response) => {
 	const {channel} = request.params
 	response.statusMessage = 'here you go'
+	if (!channels[channel]) {
+		channels[channel] = []
+	}
 	response.send([...channels[channel]].reverse())
 }
 

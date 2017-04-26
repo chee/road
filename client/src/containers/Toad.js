@@ -93,7 +93,7 @@ class Toad extends Component {
 
 	componentDidMount() {
 		const {channel} = this.state
-		this.peer = new Peer({host, port, path: '/peer'})
+		this.peer = new Peer({host: 'localhost', port: 9991})
 		this.connections = []
 		this.peer.on('connection', connection => {
 			connection.on('open', () => {
