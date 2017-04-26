@@ -1,6 +1,7 @@
 module.exports = {
 	storePicture,
-	loadPicture
+	loadPicture,
+	checkPicture
 }
 
 const shasum = require('crypto-js/sha256')
@@ -17,4 +18,8 @@ function storePicture(datauri) {
 
 function loadPicture(sha) {
 	return localforage.getItem(sha)
+}
+
+function checkPicture(picture, sha) {
+	return shasum(picture) == sha
 }

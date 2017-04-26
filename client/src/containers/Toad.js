@@ -1,9 +1,25 @@
-const Stream = require('../components/Stream')
-const Camera = require('../components/Camera')
 const React = require('inferno-compat')
 const Component = require('inferno-component')
-const {getList, addPicture} = require('../api')
-const {loadPicture} = require('../store')
+const Peer = require('peerjs')
+const {getList, addPicture, getPeers} = require('../api')
+const {loadPicture, checkPicture} = require('../store')
+const Stream = require('../components/Stream')
+const Camera = require('../components/Camera')
+
+function request(sha) {
+	return {
+		request: true,
+		sha
+	}
+}
+
+function response(sha, picture) {
+	return {
+		response: true,
+		sha,
+		picture
+	}
+}
 
 class Toad extends Component {
 	constructor(props) {
@@ -12,10 +28,29 @@ class Toad extends Component {
 			channel: location.pathname.slice(1),
 			list: [],
 			pictures: [],
+			peers: [],
 			takingPicture: null
 		}
 		this.loadPicture = this.loadPicture.bind(this)
 		this.addPicture = this.addPicture.bind(this)
+		// TODO move this to componentDidMount
+		this.peer = new Peer({host: 'localhost', port: 9991})
+		this.connections = []
+		this.peer.on('connection', connection => {
+			this.connections.push(connection)
+			connection.on('open', () => {
+				this.requestPictures(connection)
+				connection.on('data', this.handleData.bind(this, connection))
+			})
+		})
+	}
+
+	requestPictures(connection) {
+		this.state.list.forEach((sha, index) => {
+			if (!this.state.pictures[index]) {
+				connection.send(request(sha))
+			}
+		})
 	}
 
 	addPicture(sha) {
@@ -25,23 +60,54 @@ class Toad extends Component {
 
 	loadPicture(sha, index) {
 		loadPicture(sha)
-			.then(picture =>
-				this.setState(state => {
-					state.pictures[index] = picture
-				}))
+			.then(picture => {
+				if (picture) {
+					this.setState(state => {
+						state.pictures[index] = picture
+					})
+				} else {
+					this.connections.forEach(connection => {
+						connection.send(request(sha))
+					})
+				}
+			})
+	}
+
+	handleData(connection, data) {
+		if (data.request) {
+			loadPicture(data.sha).then(picture => {
+				picture && connection.send(response(data.sha, picture))
+			})
+		} else if (data.response) {
+			const index = this.state.list.indexOf(data.sha)
+			this.setState(state => {
+				state.pictures[index] = data.picture
+			})
+		}
 	}
 
 	componentDidMount() {
 		const {channel} = this.state
-		getList(channel).then(list => {
-			this.setState({list})
-		})
+		getList(channel).then(list =>
+			this.setState({list}))
+		getPeers().then(peers =>
+			this.setState({peers}))
 	}
 
 	componentDidUpdate(_, prev) {
-		const {list} = this.state
-		if (prev.list.length == list.length) return
-		list.forEach(this.loadPicture)
+		const {list, peers} = this.state
+		if (prev.peers != peers) {
+			peers.forEach(peer => {
+				const connection = this.peer.connect(peer)
+				connection.on('open', () => {
+					this.requestPictures(connection)
+					connection.on('data', this.handleData.bind(this, connection))
+				})
+			})
+		}
+		if (prev.list.length != list.length) {
+			list.forEach(this.loadPicture)
+		}
 	}
 
 	render() {
