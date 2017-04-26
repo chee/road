@@ -6,7 +6,8 @@
     "inferno": "^3.0.5",
     "inferno-compat": "^3.0.5",
     "inferno-component": "^3.0.5",
-    "localforage": "^1.5.0"
+    "localforage": "^1.5.0",
+    "peerjs": "^0.3.14"
   },
   "devDependencies": {
     "browserify": "^14.1.0",
