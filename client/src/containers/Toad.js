@@ -39,16 +39,6 @@ class Toad extends Component {
 		}
 		this.loadPicture = this.loadPicture.bind(this)
 		this.addPicture = this.addPicture.bind(this)
-		// TODO move this to componentDidMount
-		this.peer = new Peer({host: 'localhost', port: 9991})
-		this.connections = []
-		this.peer.on('connection', connection => {
-			connection.on('open', () => {
-				this.connections.push(connection)
-				this.requestPictures(connection)
-				connection.on('data', this.handleData.bind(this, connection))
-			})
-		})
 	}
 
 	requestPictures(connection) {
@@ -95,11 +85,23 @@ class Toad extends Component {
 				state.pictures[index] = data.picture
 				storePicture(data.picture)
 			})
+		} else if (data.reload) {
+			getPeers().then(peers =>
+				this.setState({peers}))
 		}
 	}
 
 	componentDidMount() {
 		const {channel} = this.state
+		this.peer = new Peer({host, port, path: '/peer'})
+		this.connections = []
+		this.peer.on('connection', connection => {
+			connection.on('open', () => {
+				this.connections.push(connection)
+				this.requestPictures(connection)
+				connection.on('data', this.handleData.bind(this, connection))
+			})
+		})
 		getList(channel).then(list =>
 			this.setState({list}))
 		getPeers().then(peers =>
@@ -118,7 +120,7 @@ class Toad extends Component {
 				})
 			})
 		}
-		if (prev.list.length != list.length) {
+		if (prev.list != list) {
 			list.forEach(this.loadPicture)
 		}
 	}
