@@ -16,11 +16,19 @@ server {
   }
 
   location /_api {
-    proxy_pass http://localhost:${API_PORT};
+    return 302 /_api/;
+  }
+
+  location /_api/ {
+    proxy_pass http://localhost:${API_PORT}/;
   }
 
   location /_peer {
-    proxy_pass http://localhost:${PEER_PORT};
+    return 302 /_peer/;
+  }
+
+  location /_peer/ {
+    proxy_pass http://localhost:${PEER_PORT}/;
   }
 }
 
