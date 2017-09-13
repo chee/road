@@ -28,6 +28,6 @@
     "reload": "livereloadify public",
     "start": "run-p watch serve reload",
     "build:dev": "buble src -o build; browserify build/index.js > public/bumble.js",
-    "build": "npm run build:dev; uglifyjs public/bumble.js > tmp.js; mv tmp.js public/bumble.js"
+    "build": "npm run build:dev; uglifyjs public/bumble.js -o public/bumble.js"
   }
 }
