@@ -12,9 +12,12 @@
     "peer": "^0.2.8"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "standard": "^10.0.3"
   },
   "scripts": {
+    "lint": "standard",
+    "fix": "standard --fix",
     "start": "nodemon index.js"
   }
 }
