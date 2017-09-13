@@ -4,7 +4,7 @@ module.exports = {
   getPeers
 }
 
-const API_ROOT = 'http://localhost:9990'
+const API_ROOT = process.env.API_ROOT || 'http://localhost:9990'
 const PUBLIC = 'public'
 
 function getList (channel) {

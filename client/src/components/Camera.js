@@ -7,17 +7,27 @@ class Camera extends React.Component {
     this.state = {
       takingPicture: false
     }
+
+    const functions = [
+      'setTakingPicture',
+      'clearTakingPicture',
+      'takePicture'
+    ]
+
+    functions.forEach(fn => {
+      this[fn] = this[fn].bind(this)
+    })
   }
 
-  setTakingPicture = () => {
+  setTakingPicture () {
     this.setState({takingPicture: true})
   }
 
-  clearTakingPicture = () => {
+  clearTakingPicture () {
     this.setState({takingPicture: false})
   }
 
-  takePicture = () => {
+  takePicture () {
     let videoStream
 
     this.setTakingPicture()

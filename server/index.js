@@ -1,9 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const body = require('body-parser')
 const PeerServer = require('peer').PeerServer
 
-const port = process.env.PORT || 9990
+const port = process.env.API_PORT || 9990
 const peerPort = process.env.PEER_PORT || 9991
 
 const peers = {}
