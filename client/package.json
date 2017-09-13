@@ -7,27 +7,38 @@
     "inferno-compat": "^3.0.5",
     "inferno-component": "^3.0.5",
     "localforage": "^1.5.0",
-    "peerjs": "^0.3.14"
+    "peerjs": "^0.3.14",
+    "prop-types": "^15.5.10"
   },
   "devDependencies": {
+    "babel-eslint": "^8.0.0",
     "browserify": "^14.1.0",
     "buble": "^0.15.2",
     "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-config-standard-react": "^5.0.0",
+    "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-inferno": "^6.10.4",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^6.10.3",
+    "eslint-plugin-standard": "^3.0.1",
     "livereloadify": "^2.0.0",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "pushstate-server": "^3.0.0",
+    "standard": "^10.0.3",
     "uglify-js": "^2.8.18",
     "watchify": "^3.9.0"
   },
   "scripts": {
-    "watch": "nodemon --exec 'npm run build:dev' --watch src",
-    "serve": "pushstate-server public ${PORT:-1690}",
-    "reload": "livereloadify public",
-    "start": "run-p watch serve reload",
+    "build": "npm run build:dev; uglifyjs public/bumble.js -o public/bumble.js",
     "build:dev": "buble src -o build; browserify build/index.js > public/bumble.js",
-    "build": "npm run build:dev; uglifyjs public/bumble.js -o public/bumble.js"
+    "fix": "eslint --fix src/**/**.js",
+    "lint": "eslint src/**/**.js",
+    "reload": "livereloadify public",
+    "serve": "pushstate-server public ${PORT:-1690}",
+    "start": "run-p watch serve reload",
+    "watch": "nodemon --exec 'npm run build:dev' --watch src"
   }
 }
