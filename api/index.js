@@ -2,7 +2,8 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const body = require('body-parser')
-const PeerServer = require('peer').PeerServer
+const {PeerServer} = require('peer')
+const {readFileSync} = require('fs')
 
 const port = process.env.API_PORT
 const peerPort = process.env.PEER_PORT
@@ -14,8 +15,13 @@ if (!port || !peerPort) {
 
 const peers = {}
 const peerServer = PeerServer({
+  host: process.env.HOST,
+  path: '/',
   port: peerPort,
-  proxied: true
+  ssl: {
+    cert: readFileSync(process.env.CERT_PATH),
+    key: readFileSync(process.env.KEY_PATH)
+  }
 })
 
 const channels = {

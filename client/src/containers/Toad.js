@@ -95,9 +95,8 @@ class Toad extends Component {
     const {channel} = this.state
     this.peer = new Peer({
       host: '/',
-      path: '/_peer',
-      port: 443,
-      secure: true
+      secure: true,
+      port: window._env.PEER_PORT
     })
 
     this.connections = []
