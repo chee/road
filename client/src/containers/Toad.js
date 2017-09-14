@@ -140,12 +140,12 @@ class Toad extends Component {
 
     return (
       <div>
-        <Stream
-          pictures={pictures}
-        />
         <Camera
           addPicture={this.addPicture}
           channel={channel}
+        />
+        <Stream
+          pictures={pictures}
         />
       </div>
     )
