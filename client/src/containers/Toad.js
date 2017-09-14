@@ -5,17 +5,18 @@ const {getList, addPicture, getPeers} = require('../api')
 const {loadPicture, checkPicture, storePicture} = require('../store')
 const Stream = require('../components/Stream')
 const Camera = require('../components/Camera')
+const {RESPONSE, REQUEST, RELOAD} = require('../constants')
 
 function request (sha) {
   return {
-    request: true,
+    type: REQUEST,
     sha
   }
 }
 
 function response (sha, picture) {
   return {
-    response: true,
+    type: RESPONSE,
     sha,
     picture
   }
@@ -23,7 +24,7 @@ function response (sha, picture) {
 
 function reload () {
   return {
-    reload: true
+    type: RELOAD
   }
 }
 
@@ -75,23 +76,35 @@ class Toad extends Component {
   }
 
   handleData (connection, data) {
-    if (data.request) {
-      loadPicture(data.sha).then(picture => {
-        picture && connection.send(response(data.sha, picture))
-      })
-    } else if (data.response) {
-      const pictureValid = checkPicture(data.picture, data.sha)
-      if (!pictureValid) {
-        return console.error('invalid picture received')
+    console.log(data, data.type)
+    switch (data.type) {
+      case REQUEST: {
+        return loadPicture(data.sha)
+          .then(picture =>
+            picture && connection.send(response(data.sha, picture))
+          )
       }
-      const index = this.state.list.indexOf(data.sha)
-      this.setState(state => {
-        state.pictures[index] = data.picture
-        storePicture(data.picture)
-      })
-    } else if (data.reload) {
-      getPeers().then(peers =>
-        this.setState({peers}))
+      case RESPONSE: {
+        const pictureValid = checkPicture(data.picture, data.sha)
+
+        if (!pictureValid) {
+          return console.error('invalid picture received')
+        }
+
+        const index = this.state.list.indexOf(data.sha)
+
+        return this.setState(state => {
+          state.pictures[index] = data.picture
+          storePicture(data.picture)
+        })
+      }
+      case RELOAD: {
+        return getPeers()
+          .then(peers =>
+            this.setState({peers})
+          )
+      }
+      default:
     }
   }
 
