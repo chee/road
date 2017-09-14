@@ -1,4 +1,4 @@
-const API_ROOT = `${location.origin}/_api/`
+const API_ROOT = `${location.origin}/_api`
 const PUBLIC = 'public'
 
 const getList = channel =>
@@ -18,7 +18,7 @@ const addPicture = (channel, sha) =>
     response.ok
       ? response.json()
       : Promise.reject(response)
-    )
+    ).catch(console.error)
 
 module.exports = {
   getList,

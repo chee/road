@@ -38,27 +38,32 @@ class Camera extends React.Component {
       .then(stream => {
         this.video.srcObject = stream
         this.video.play()
-        this.video.width = 500
         videoStream = stream
       })
       .catch(error => console.error('oh no:', error))
 
     this.video.addEventListener('canplay', () => {
-      const context = this.canvas.getContext('2d')
-      context.drawImage(
-        this.video,
-        0, 0,
-        this.video.videoWidth,
-        this.video.videoHeight
-      )
-
-      storePicture(this.canvas.toDataURL('image/jpg'))
-        .then(this.props.addPicture)
-        .catch(error => console.error('error adding picture', error))
-
-      this.clearTakingPicture()
-
-      videoStream.getTracks()[0].stop()
+      setTimeout(() => {
+        const context = this.canvas.getContext('2d')
+        const style = getComputedStyle(this.video)
+        const width = parseInt(style.width)
+        const height = parseInt(style.height)
+        this.canvas.setAttribute('width', width)
+        this.canvas.setAttribute('height', height)
+        context.drawImage(
+          this.video,
+          0, 0,
+          width, height
+        )
+        storePicture(this.canvas.toDataURL('image/jpeg', true))
+          .then(picture => {
+            console.log(picture)
+            this.props.addPicture(picture)
+            this.clearTakingPicture()
+            videoStream.getTracks()[0].stop()
+          })
+          .catch(error => console.error('error adding picture', error))
+      }, 1000)
     })
   }
 
