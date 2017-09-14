@@ -57,7 +57,6 @@ class Camera extends React.Component {
         )
         storePicture(this.canvas.toDataURL('image/jpeg', true))
           .then(picture => {
-            console.log(picture)
             this.props.addPicture(picture)
             this.clearTakingPicture()
             videoStream.getTracks()[0].stop()

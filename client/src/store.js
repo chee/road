@@ -14,7 +14,7 @@ const loadPicture = sha =>
   localforage.getItem(sha)
 
 const checkPicture = (picture, sha) =>
-  shasum(picture) === sha
+  shasum(picture).toString() === sha
 
 module.exports = {
   storePicture,

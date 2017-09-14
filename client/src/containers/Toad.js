@@ -79,7 +79,11 @@ class Toad extends Component {
       loadPicture(data.sha).then(picture => {
         picture && connection.send(response(data.sha, picture))
       })
-    } else if (data.response && checkPicture(data.picture, data.sha)) {
+    } else if (data.response) {
+      const pictureValid = checkPicture(data.picture, data.sha)
+      if (!pictureValid) {
+        return console.error('invalid picture received')
+      }
       const index = this.state.list.indexOf(data.sha)
       this.setState(state => {
         state.pictures[index] = data.picture
