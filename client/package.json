@@ -24,7 +24,6 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^6.10.3",
     "eslint-plugin-standard": "^3.0.1",
-    "livereloadify": "^2.0.0",
     "mu2": "^0.5.21",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
@@ -37,9 +36,8 @@
     "build:dev": "node scripts/updateIndexEnv.js; buble src -o build; browserify build/index.js > public/bumble.js",
     "fix": "eslint --fix src/**/**.js",
     "lint": "eslint src/**/**.js",
-    "reload": "livereloadify public",
     "serve": "node ../server",
-    "start": "run-p watch serve reload",
+    "start": "run-p watch serve",
     "watch": "nodemon --exec 'npm run build:dev' --watch src"
   }
 }
