@@ -5,7 +5,6 @@ const {parse} = require('dotenv')
 const mu2 = require('mu2')
 
 const readFile = promisify(fs.readFile)
-const writeFile = promisify(fs.writeFile)
 const {createWriteStream} = fs
 
 const dotEnvFile = resolve(__dirname, '..', '.env')
