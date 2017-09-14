@@ -8,5 +8,6 @@ const {env} = process
 const publicPath = env.PUBLIC_PATH || resolve(__dirname, '../client/public')
 
 serve(publicPath, {
-  port: env.HTTP_PORT
+  port: env.HTTP_PORT,
+  single: true
 })
