@@ -94,10 +94,14 @@ class Toad extends Component {
   componentDidMount () {
     const {channel} = this.state
     this.peer = new Peer({
-      host: process.env.PEER_HOST || 'localhost',
-      port: process.env.PEER_PORT || 9991
+      host: '/',
+      path: '/_peer',
+      port: 443,
+      secure: true
     })
+
     this.connections = []
+
     this.peer.on('connection', connection => {
       connection.on('open', () => {
         this.connections.push(connection)
@@ -105,6 +109,7 @@ class Toad extends Component {
         connection.on('data', this.handleData.bind(this, connection))
       })
     })
+
     getList(channel).then(list =>
       this.setState({list}))
     getPeers().then(peers =>
@@ -133,6 +138,7 @@ class Toad extends Component {
       channel,
       pictures
     } = this.state
+
     return (
       <div>
         <Stream

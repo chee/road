@@ -4,8 +4,8 @@ with (process.env) {
 console.log(`
 server {
   default_type text/plain;
-  listen 443 http2 ssl;
-  listen [::]:443 http2 ssl;
+  listen 443 ssl;
+  listen [::]:443 ssl;
   server_name ${HOST};
   ssl on;
   ssl_certificate ${CERT_PATH};

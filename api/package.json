@@ -1,7 +1,7 @@
 {
-  "name": "road-server",
+  "name": "road-api",
   "version": "1.0.0",
-  "description": "server for ROAD",
+  "description": "api for ROAD",
   "main": "index.js",
   "repository": "git@gitlab.com:chee/road",
   "author": "chee <chee@snake.dog>",

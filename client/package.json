@@ -27,7 +27,6 @@
     "livereloadify": "^2.0.0",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
-    "pushstate-server": "^3.0.0",
     "standard": "^10.0.3",
     "uglify-js": "^2.8.18",
     "watchify": "^3.9.0"
@@ -38,7 +37,7 @@
     "fix": "eslint --fix src/**/**.js",
     "lint": "eslint src/**/**.js",
     "reload": "livereloadify public",
-    "serve": "pushstate-server public ${HTTP_PORT:-1690}",
+    "serve": "node ../server",
     "start": "run-p watch serve reload",
     "watch": "nodemon --exec 'npm run build:dev' --watch src"
   }
