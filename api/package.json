@@ -4,7 +4,7 @@
   "description": "api for ROAD",
   "main": "index.js",
   "repository": "git@gitlab.com:chee/road",
-  "author": "chee <chee@snake.dog>",
+  "author": "chee <yay@chee.party>",
   "dependencies": {
     "body-parser": "^1.17.1",
     "dotenv": "^4.0.0",
